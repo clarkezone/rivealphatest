@@ -28,6 +28,19 @@ window.addEventListener(
   false
 );
 
+// Create WebSocket connection.
+const socket = new WebSocket("ws://100.115.218.3:8080/channel");
+
+// Connection opened
+socket.addEventListener("open", (event) => {
+  socket.send("requestplay");
+});
+
+// Listen for messages
+socket.addEventListener("message", (event) => {
+  console.log("Message from server ", event.data);
+});
+
     </script>
 
 </body></html>

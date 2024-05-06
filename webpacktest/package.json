@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@rive-app/canvas": "^2.15.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
+  }
+}
