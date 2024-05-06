@@ -2,54 +2,37 @@ import "./styles.css";
 
 const rive = require("@rive-app/canvas");
 
-// ----
-// LOCAL RIVE EXAMPLE
-// ----
+class Animal{
 
-const layout = new rive.Layout({
-  fit: rive.Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
-  alignment: rive.Alignment.Center,
-});
+ constructor(name){
+    this.name = name;
+    this.riveCanvas = document.getElementById(name);
+    this.layout = new rive.Layout({
+	  fit: rive.Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
+	  alignment: rive.Alignment.Center,
+	});
+    window.addEventListener(
+      "resize",
+      () => {
+        riveInstance.resizeDrawingSurfaceToCanvas();
+      },
+      false
+    );
+}
 
-const riveCanvas = document.getElementById("rive-canvas")
-
-const riveInstance = new rive.Rive({
-  // Load a local riv `clean_the_car.riv` or upload your own!
-  src: "clean_the_car.riv",
-  // Be sure to specify the correct state machine (or animation) name
-  stateMachines: "Motion", // Name of the State Machine to play
-  canvas: riveCanvas,
-  layout: layout, // This is optional. Provides additional layout control.
-  autoplay: true,
-  onLoad: () => {
-    // Prevent a blurry canvas by using the device pixel ratio
-    riveInstance.resizeDrawingSurfaceToCanvas();
+ rive(){
+	const riveInstance = new rive.Rive({
+	  src: "clean_the_car.riv",
+	  stateMachines: "Motion", // Name of the State Machine to play
+	  canvas: this.riveCanvas,
+	  layout: this.layout, // This is optional. Provides additional layout control.
+	  autoplay: true,
+	  onLoad: () => {
+	    riveInstance.resizeDrawingSurfaceToCanvas();
+	  }
+	});
   }
-});
+}
 
-// Resize the drawing surface if the window resizes
-window.addEventListener(
-  "resize",
-  () => {
-    riveInstance.resizeDrawingSurfaceToCanvas();
-  },
-  false
-);
-
-// ---------------------------------
-
-// ----
-// HOSTED RIVE EXAMPLE
-// Comment out the code above and uncomment the code below.
-// ----
-
-// const riveHostedInstance = new rive.Rive({
-//   // Hosted .riv asset.
-//   src: "https://cdn.rive.app/animations/vehicles.riv",
-//   stateMachines: "bumpy",
-//   canvas: riveCanvas,
-//   autoplay: true,
-//   onLoad: () => {
-//     riveHostedInstance.resizeDrawingSurfaceToCanvas();
-//   }
-// });
+var a = new Animal("rive-canvas");
+a.rive();

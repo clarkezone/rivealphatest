@@ -11,6 +11,12 @@ function initializeRive() {
     });
 }
 
+const riveScript = document.createElement("script");
+riveScript.src = "https://unpkg.com/@rive-app/canvas@2.10.3";
+riveScript.onload = initializeRive; // Call initializeRive() when the script is loaded
+document.head.appendChild(riveScript);
+
+
 import('https://unpkg.com/@rive-app/canvas@2.10.3/rive.js')
     .then(() => {
         // Call initializeRive() when the module is loaded
