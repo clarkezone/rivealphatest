@@ -120,7 +120,7 @@ class WebSocketManager {
 
   updateRiveInstance(existing, name, x, y, width, height) {
     const instance = existing;
-    instance.updateDom(name, width, height, x, y);
+    instance.updateDom(name, x, y, width, height);
   }
 
   removeRiveInstance(name) {
