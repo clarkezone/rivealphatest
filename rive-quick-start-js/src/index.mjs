@@ -138,7 +138,7 @@ class RiveInstance {
     this.uuid = id;
     this.canvas = document.createElement("canvas");
     this.canvas.id = id;
-    this.updateDom(name, width, height, x, y);
+    this.updateDom(name, x, y, width, height);
     document.body.appendChild(this.canvas);
     this.riveInstance = new rive.Rive({
       src: src,
@@ -154,7 +154,7 @@ class RiveInstance {
     this.canvas.remove();
   }
 
-  updateDom(name, width, height, x, y) {
+  updateDom(name, x, y, width, height) {
     this.name = name;
     this.canvas.width = width;
     this.canvas.height = height;
