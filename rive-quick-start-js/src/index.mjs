@@ -49,7 +49,6 @@ class WebSocketManager {
           this.updateRiveInstance(
             instexists,
             INSTANCE_ID,
-            INSTANCE_NAME,
             X_POSITION,
             Y_POSITION,
             WIDTH,
