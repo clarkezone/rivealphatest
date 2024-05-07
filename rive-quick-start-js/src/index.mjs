@@ -160,6 +160,7 @@ class RiveInstance {
     this.canvas.style.position = "absolute";
     this.canvas.style.left = `${x}px`;
     this.canvas.style.top = `${y}px`;
+    this.riveInstance.resizeDrawingSurfaceToCanvas();
   }
 
   play(animationName) {
