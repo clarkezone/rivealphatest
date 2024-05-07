@@ -32,7 +32,7 @@ class WebSocketManager {
         const Y_POSITION = parseFloat(words[5]);
         const WIDTH = parseFloat(words[6]);
         const HEIGHT = parseFloat(words[7]);
-        const instexists = this.riveInstances.get(INSTANCE_NAME);
+        const instexists = this.riveInstances.get(INSTANCE_ID);
         if (!instexists) {
           console.log("Creating instance ", INSTANCE_NAME);
           this.addRiveInstance(
