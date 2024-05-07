@@ -101,7 +101,11 @@ class WebSocketManager {
               const inputs = INSTANCE_COMMAND.stateMachineInputs(PARAM_1);
               const exitValue = inputs.find((i) => i.name == PARAM_2);
               if (exitValue) {
-                exitValue.value = !exitValue.value;
+                if (PARAM_3) {
+                  exitValue.value = PARAM_3;
+                } else {
+                  exitValue.value = !exitValue.value;
+                }
                 console.log(`exitValue toggled to ${exitValue.value}`);
               }
             }
