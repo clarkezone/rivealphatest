@@ -102,11 +102,12 @@ class WebSocketManager {
               const exitValue = inputs.find((i) => i.name == PARAM_2);
               if (exitValue) {
                 if (PARAM_3) {
+                  console.log(`exitValue set to ${PARAM_3}`);
                   exitValue.value = PARAM_3;
                 } else {
+                  console.log(`exitValue toggled to ${exitValue.value}`);
                   exitValue.value = !exitValue.value;
                 }
-                console.log(`exitValue toggled to ${exitValue.value}`);
               }
             }
             break;
