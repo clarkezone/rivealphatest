@@ -25,16 +25,18 @@ class WebSocketManager {
 
     switch (MESSAGE_TYPE) {
       case "addInstance":
-        const INSTANCE_NAME = words[1];
+        const INSTANCE_ID = words[1];
+        const INSTANCE_NAME = words[2];
         const instexists = this.riveInstances.get(INSTANCE_NAME);
         if (!instexists) {
           console.log("Creating instance ", INSTANCE_NAME);
-          const RIVE_SRC = words[2];
-          const X_POSITION = parseFloat(words[3]);
-          const Y_POSITION = parseFloat(words[4]);
-          const WIDTH = parseFloat(words[5]);
-          const HEIGHT = parseFloat(words[6]);
+          const RIVE_SRC = words[3];
+          const X_POSITION = parseFloat(words[4]);
+          const Y_POSITION = parseFloat(words[5]);
+          const WIDTH = parseFloat(words[6]);
+          const HEIGHT = parseFloat(words[7]);
           this.addRiveInstance(
+            INSTANCE_ID,
             INSTANCE_NAME,
             RIVE_SRC,
             X_POSITION,
@@ -43,16 +45,16 @@ class WebSocketManager {
             HEIGHT,
           );
         } else {
-          console.log("Instance already exists:");
+          console.log("Instance already exists:", INSTANCE_ID);
         }
         break;
       case "removeInstance":
-        const INSTANCE_NAME_TO_REMOVE = words[1];
-        this.removeRiveInstance(INSTANCE_NAME_TO_REMOVE);
+        const INSTANCE_ID_TO_REMOVE = words[1];
+        this.removeRiveInstance(INSTANCE_ID_TO_REMOVE);
         break;
       default:
-        const INSTANCE_NAME_COMMAND = words[1];
-        const INSTANCE_COMMAND = this.riveInstances.get(INSTANCE_NAME_COMMAND);
+        const INSTANCE_ID_COMMAND = words[1];
+        const INSTANCE_COMMAND = this.riveInstances.get(INSTANCE_ID_COMMAND);
         if (!INSTANCE_COMMAND) {
           console.error(`Rive instance "${INSTANCE_NAME_COMMAND}" not found.`);
           return;
@@ -102,9 +104,9 @@ class WebSocketManager {
     }
   }
 
-  addRiveInstance(name, src, x, y, width, height) {
-    const instance = new RiveInstance(name, src, x, y, width, height);
-    this.riveInstances.set(name, instance);
+  addRiveInstance(uuid, name, src, x, y, width, height) {
+    const instance = new RiveInstance(uuid, name, src, x, y, width, height);
+    this.riveInstances.set(uuid, instance);
   }
 
   removeRiveInstance(name) {
@@ -117,7 +119,9 @@ class WebSocketManager {
 }
 
 class RiveInstance {
-  constructor(name, src, x, y, width, height) {
+  constructor(uuid, name, src, x, y, width, height) {
+    //TODO: break out update logic and call it from here
+    this.uuid = uuid;
     this.name = name;
     this.canvas = document.createElement("canvas");
     this.canvas.id = name;
@@ -170,38 +174,4 @@ class RiveInstance {
   }
 }
 
-class Animal {
-  constructor(name) {
-    this.name = name;
-    this.riveCanvas = document.getElementById(name);
-    this.layout = new rive.Layout({
-      fit: rive.Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
-      alignment: rive.Alignment.Center,
-    });
-  }
-
-  rive() {
-    const riveInstance = new rive.Rive({
-      src: "clean_the_car.riv",
-      stateMachines: "Motion", // Name of the State Machine to play
-      canvas: this.riveCanvas,
-      layout: this.layout, // This is optional. Provides additional layout control.
-      autoplay: true,
-      onLoad: () => {
-        riveInstance.resizeDrawingSurfaceToCanvas();
-      },
-    });
-    window.addEventListener(
-      "resize",
-      () => {
-        riveInstance.resizeDrawingSurfaceToCanvas();
-      },
-      false,
-    );
-  }
-}
-
-//var a = new Animal("rive-canvas");
-//a.rive();
 var a = new WebSocketManager();
-a.initSocket();
