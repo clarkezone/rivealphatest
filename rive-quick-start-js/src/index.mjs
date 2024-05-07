@@ -133,9 +133,9 @@ class WebSocketManager {
 }
 
 class RiveInstance {
-  constructor(uuid, id, name, src, x, y, width, height) {
+  constructor(id, name, src, x, y, width, height) {
     //TODO: break out update logic and call it from here
-    this.uuid = uuid;
+    this.uuid = id;
     this.canvas = document.createElement("canvas");
     this.canvas.id = id;
     this.updateDom(name, width, height, x, y);
