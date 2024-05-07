@@ -27,14 +27,14 @@ class WebSocketManager {
       case "addInstance":
         const INSTANCE_ID = words[1];
         const INSTANCE_NAME = words[2];
+        const RIVE_SRC = words[3];
+        const X_POSITION = parseFloat(words[4]);
+        const Y_POSITION = parseFloat(words[5]);
+        const WIDTH = parseFloat(words[6]);
+        const HEIGHT = parseFloat(words[7]);
         const instexists = this.riveInstances.get(INSTANCE_NAME);
         if (!instexists) {
           console.log("Creating instance ", INSTANCE_NAME);
-          const RIVE_SRC = words[3];
-          const X_POSITION = parseFloat(words[4]);
-          const Y_POSITION = parseFloat(words[5]);
-          const WIDTH = parseFloat(words[6]);
-          const HEIGHT = parseFloat(words[7]);
           this.addRiveInstance(
             INSTANCE_ID,
             INSTANCE_NAME,
@@ -46,6 +46,15 @@ class WebSocketManager {
           );
         } else {
           console.log("Instance already exists:", INSTANCE_ID);
+          this.updateRiveInstance(
+            instexists,
+            INSTANCE_ID,
+            INSTANCE_NAME,
+            X_POSITION,
+            Y_POSITION,
+            WIDTH,
+            HEIGHT,
+          );
         }
         break;
       case "removeInstance":
@@ -109,6 +118,11 @@ class WebSocketManager {
     this.riveInstances.set(uuid, instance);
   }
 
+  updateRiveInstance(existing, name, x, y, width, height) {
+    const instance = existing;
+    instance.updateDom(name, width, height, x, y);
+  }
+
   removeRiveInstance(name) {
     const instance = this.riveInstances.get(name);
     if (instance) {
@@ -119,17 +133,12 @@ class WebSocketManager {
 }
 
 class RiveInstance {
-  constructor(uuid, name, src, x, y, width, height) {
+  constructor(uuid, id, name, src, x, y, width, height) {
     //TODO: break out update logic and call it from here
     this.uuid = uuid;
-    this.name = name;
     this.canvas = document.createElement("canvas");
-    this.canvas.id = name;
-    this.canvas.width = width;
-    this.canvas.height = height;
-    this.canvas.style.position = "absolute";
-    this.canvas.style.left = `${x}px`;
-    this.canvas.style.top = `${y}px`;
+    this.canvas.id = id;
+    this.updateDom(name, width, height, x, y);
     document.body.appendChild(this.canvas);
     this.riveInstance = new rive.Rive({
       src: src,
@@ -143,6 +152,15 @@ class RiveInstance {
 
   destroy() {
     this.canvas.remove();
+  }
+
+  updateDom(name, width, height, x, y) {
+    this.name = name;
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.canvas.style.position = "absolute";
+    this.canvas.style.left = `${x}px`;
+    this.canvas.style.top = `${y}px`;
   }
 
   play(animationName) {
